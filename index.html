@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <form @submit.prevent="addNewTodo">
+        <label for="new-todo">Add new Todo item</label><br />
+        <input id="new-todo" type="text" v-model="currentTodo" />
+        <button>Add</button>
+      </form>
+
+      <button @click="currentListType = 'All'">All</button>
+      <button @click="currentListType = 'Open'">Open</button>
+      <button @click="currentListType = 'Done'">Done</button>
+
+      <h2>Filter</h2>
+      <button @click="removeAllDoneItems" v-if="currentListType === 'Done'">
+        Remove all done items
+      </button>
+
+      <h2>Search</h2>
+      <input type="text" v-model="searchValue" />
+
+      <ul>
+        <li v-for="(todo, index) of todoList">
+          <input
+            @change="updateDoneStatus(index)"
+            type="checkbox"
+            :checked="todo.done"
+          />
+          {{ todo.edit }}
+          <span v-if="!todo.edit">{{ todo.title }}</span>
+          <input v-else type="text" v-model="todo.title" />
+          <button @click="toggleEdit(index)">
+            {{ !todo.edit ? 'Edit' : 'Save' }}
+          </button>
+        </li>
+      </ul>
+      {{ todoList }}
+    </div>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
